@@ -5,6 +5,11 @@ const saveBtn = document.getElementById("saveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const datePicker = document.getElementById("datePicker");
 
+const titleInput = document.getElementById("titleInput");
+const descInput = document.getElementById("descInput");
+const priorityInput = document.getElementById("priorityInput");
+const dailyInput = document.getElementById("dailyInput");
+
 datePicker.valueAsDate = new Date();
 
 let data = JSON.parse(localStorage.getItem("tracker")) || {
@@ -42,9 +47,11 @@ function render() {
       <div class="task-desc">${task.desc || ""}</div>
     `;
 
+    // Открытие описания по нажатию на заголовок
     div.querySelector(".task-title").onclick = () =>
       div.classList.toggle("open");
 
+    // Обновление статуса задачи
     div.querySelector("input").onchange = e => {
       task.done = e.target.checked;
       save();
@@ -54,9 +61,32 @@ function render() {
   });
 }
 
+// Открыть модальное окно
 addBtn.onclick = () => modal.classList.remove("hidden");
-cancelBtn.onclick = () => modal.classList.add("hidden");
 
+// Закрыть по кнопке Отмена
+cancelBtn.onclick = () => {
+  modal.classList.add("hidden");
+  resetForm();
+};
+
+// Закрыть по нажатию на тёмный фон
+modal.onclick = (e) => {
+  if (e.target === modal) {
+    modal.classList.add("hidden");
+    resetForm();
+  }
+};
+
+// Сброс формы
+function resetForm() {
+  titleInput.value = "";
+  descInput.value = "";
+  dailyInput.checked = false;
+  priorityInput.value = "";
+}
+
+// Сохранение новой задачи
 saveBtn.onclick = () => {
   const title = titleInput.value.trim();
   if (!title) return;
@@ -77,12 +107,13 @@ saveBtn.onclick = () => {
   }
 
   save();
-  modal.classList.add("hidden");
-  titleInput.value = descInput.value = "";
-  dailyInput.checked = false;
-  priorityInput.value = "";
+  modal.classList.add("hidden"); // Закрываем окно
+  resetForm();
   render();
 };
 
+// Обновление задач при смене даты
 datePicker.onchange = render;
+
+// Начальная отрисовка
 render();
