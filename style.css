@@ -1,0 +1,111 @@
+:root {
+  --bg: #ffffff;
+  --text: #111;
+  --card: #f2f2f2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --text: #ffffff;
+    --card: #111111;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#tasks {
+  padding: 16px;
+}
+
+.task {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.task.high { border-left: 4px solid #ff453a; }
+.task.medium { border-left: 4px solid #ffd60a; }
+.task.low { border-left: 4px solid #30d158; }
+
+.task-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-desc {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.8;
+  display: none;
+}
+
+.task.open .task-desc {
+  display: block;
+}
+
+#addBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-size: 32px;
+  border: none;
+  background: #0a84ff;
+  color: white;
+}
+
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: var(--card);
+  padding: 16px;
+  border-radius: 16px;
+  width: 90%;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
