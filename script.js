@@ -10,9 +10,11 @@ const descInput = document.getElementById("descInput");
 const priorityInput = document.getElementById("priorityInput");
 const dailyInput = document.getElementById("dailyInput");
 
+// Устанавливаем сегодняшнюю дату
 datePicker.valueAsDate = new Date();
 
-let data = JSON.parse(localStorage.getItem("tracker"))  {
+// Загружаем данные из localStorage
+let data = JSON.parse(localStorage.getItem("tracker")) || {
   habits: [],
   tasksByDate: {}
 };
@@ -27,34 +29,37 @@ function getTodayKey() {
 
 function render() {
   tasksEl.innerHTML = "";
+
   const dateKey = getTodayKey();
   const tasks = [
     ...data.habits,
-    ...(data.tasksByDate[dateKey]  [])
+    ...(data.tasksByDate[dateKey] || [])
   ];
 
   tasks.forEach(task => {
     const div = document.createElement("div");
-    div.className = task ${task.priority || ""};
+    div.className = `task ${task.priority || ""}`;
 
     div.innerHTML = `
       <div class="task-title">
         <label>
-          <input type="checkbox" ${task.done ? "checked" : ""}/>
+          <input type="checkbox" ${task.done ? "checked" : ""} />
           ${task.title}
         </label>
       </div>
       <div class="task-desc">${task.desc || ""}</div>
     `;
 
-    // Открытие описания по нажатию на заголовок
-    div.querySelector(".task-title").onclick = () =>
+    // Открытие / закрытие описания
+    div.querySelector(".task-title").onclick = () => {
       div.classList.toggle("open");
+    };
 
-    // Обновление статуса задачи
+    // Отметка выполнения
     div.querySelector("input").onchange = e => {
       task.done = e.target.checked;
       save();
+      render();
     };
 
     tasksEl.appendChild(div);
@@ -62,16 +67,18 @@ function render() {
 }
 
 // Открыть модальное окно
-addBtn.onclick = () => modal.classList.remove("hidden");
+addBtn.onclick = () => {
+  modal.classList.remove("hidden");
+};
 
-// Закрыть по кнопке Отмена
+// Закрыть по кнопке "Отмена"
 cancelBtn.onclick = () => {
   modal.classList.add("hidden");
   resetForm();
 };
 
-// Закрыть по нажатию на тёмный фон
-modal.onclick = (e) => {
+// Закрыть по нажатию на фон
+modal.onclick = e => {
   if (e.target === modal) {
     modal.classList.add("hidden");
     resetForm();
@@ -82,8 +89,8 @@ modal.onclick = (e) => {
 function resetForm() {
   titleInput.value = "";
   descInput.value = "";
-  dailyInput.checked = false;
   priorityInput.value = "";
+  dailyInput.checked = false;
 }
 
 // Сохранение новой задачи
@@ -94,7 +101,7 @@ saveBtn.onclick = () => {
   const task = {
     title,
     desc: descInput.value,
-    priority: priorityInput.value,
+    priority: priorityInput.value || null,
     done: false
   };
 
@@ -102,18 +109,18 @@ saveBtn.onclick = () => {
     data.habits.push(task);
   } else {
     const key = getTodayKey();
-    data.tasksByDate[key] ??= [];
+    data.tasksByDate[key] ||= [];
     data.tasksByDate[key].push(task);
   }
 
   save();
-  modal.classList.add("hidden"); // Закрываем окно
+  modal.classList.add("hidden");
   resetForm();
   render();
 };
 
-// Обновление задач при смене даты
+// Перерисовка при смене даты
 datePicker.onchange = render;
 
-// Начальная отрисовка
+// Первая отрисовка
 render();
