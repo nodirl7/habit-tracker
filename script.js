@@ -1,3 +1,4 @@
+alert("JS версия 3 загружена");
 const tasksEl = document.getElementById("tasks");
 const modal = document.getElementById("modal");
 const addBtn = document.getElementById("addBtn");
