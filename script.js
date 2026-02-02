@@ -196,3 +196,6 @@ input, textarea, select {
     justify-content: space-between;
     margin-top: 10px;
 }
+body {
+  background: red !important;
+}
