@@ -1,49 +1,72 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Task & Habit Tracker</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <!-- Запрет масштабирования для ощущения нативного приложения -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Иконки (можно подключить Ionicons или FontAwesome, здесь для примера SVG в коде) -->
 </head>
 <body>
-  <header>
-    <h1>Сегодня</h1>
-    <input type="date" id="datePicker" />
-  </header>
 
-  <main>
-    <section id="tasks"></section>
-  </main>
+    <div class="app-container">
+        <!-- Шапка с датой и статистикой -->
+        <header>
+            <div class="date-nav">
+                <button id="prevDay">←</button>
+                <h2 id="currentDateDisplay">Сегодня</h2>
+                <button id="nextDay">→</button>
+            </div>
+            
+            <!-- НОВОЕ: Блок статистики -->
+            <div class="stats-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="stats-text" id="statsText">0% выполнено</p>
+            </div>
+        </header>
 
-  <button id="addBtn">＋</button>
+        <!-- Список задач -->
+        <main id="taskList" class="task-list">
+            <!-- Задачи будут здесь -->
+        </main>
 
-  <div id="modal" class="hidden">
-    <div class="modal-content">
-      <h2>Новая задача</h2>
-
-      <input id="titleInput" placeholder="Заголовок" />
-      <textarea id="descInput" placeholder="Описание (необязательно)"></textarea>
-
-      <select id="priorityInput">
-        <option value="">Без приоритета</option>
-        <option value="high">Высокий</option>
-        <option value="medium">Средний</option>
-        <option value="low">Низкий</option>
-      </select>
-
-      <label class="checkbox">
-        <input type="checkbox" id="dailyInput" />
-        Ежедневная
-      </label>
-
-      <div class="actions">
-        <button id="saveBtn">Сохранить</button>
-        <button id="cancelBtn">Отмена</button>
-      </div>
+        <!-- Кнопка добавления -->
+        <button class="fab" id="addTaskBtn">+</button>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <!-- Модальное окно добавления (упрощено) -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Новая задача</h3>
+            <input type="text" id="taskTitle" placeholder="Название (обязательно)">
+            <textarea id="taskDesc" placeholder="Описание (опционально)"></textarea>
+            
+            <label>Приоритет:</label>
+            <select id="taskPriority">
+                <option value="none">Без приоритета</option>
+                <option value="low">Низкий 🟢</option>
+                <option value="medium">Средний 🟡</option>
+                <option value="high">Высокий 🔴</option>
+            </select>
+
+            <label>Тип:</label>
+            <select id="taskType">
+                <option value="daily">Ежедневная привычка</option>
+                <option value="one-time">Разовая на эту дату</option>
+            </select>
+
+            <div class="modal-actions">
+                <button id="cancelBtn">Отмена</button>
+                <button id="saveBtn" class="primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
